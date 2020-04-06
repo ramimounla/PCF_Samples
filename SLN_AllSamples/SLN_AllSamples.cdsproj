@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PowerAppsTargetsPath>$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\PowerApps</PowerAppsTargetsPath>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
+  <Import Project="$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.props" Condition="Exists('$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.props')" />
+
+  <PropertyGroup>
+    <ProjectGuid>931aed61-0881-4d44-b52d-8cc646de7b5d</ProjectGuid>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <!--Remove TargetFramework when this is available in 16.1-->
+    <TargetFramework>net462</TargetFramework>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+
+  <!-- Solution Packager overrides, un-comment to use: SolutionPackagerType (Managed, Unmanaged, Both)
+  <PropertyGroup>
+    <SolutionPackageType>Managed</SolutionPackageType>
+  </PropertyGroup>
+  -->
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.PowerApps.MSBuild.Solution" Version="1.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ExcludeDirectories Include="$(MSBuildThisFileDirectory)\.gitignore" />
+    <ExcludeDirectories Include="$(MSBuildThisFileDirectory)\bin\**" />
+    <ExcludeDirectories Include="$(MSBuildThisFileDirectory)\obj\**" />
+    <ExcludeDirectories Include="$(MSBuildThisFileDirectory)\*.cdsproj" />
+    <ExcludeDirectories Include="$(MSBuildThisFileDirectory)\*.cdsproj.user" />
+    <ExcludeDirectories Include="$(MSBuildThisFileDirectory)\*.sln" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)\**" Exclude="@(ExcludeDirectories)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JS_AngularJSFlipComponent\JS_AngularJSFlipComponent.pcfproj" />
+    <ProjectReference Include="..\TS_ComponentStateAPI\TS_ComponentStateAPI.pcfproj" />
+    <ProjectReference Include="..\TS_DataSetGrid\TS_DataSetGrid.pcfproj" />
+    <ProjectReference Include="..\TS_DeviceApiComponent\TS_DeviceApiComponent.pcfproj" />
+    <ProjectReference Include="..\TS_FormattingAPI\TS_FormattingAPI.pcfproj" />
+    <ProjectReference Include="..\TS_IFrameComponent\TS_IFrameComponent.pcfproj" />
+    <ProjectReference Include="..\TS_ImageUploadComponent\TS_ImageUploadComponent.pcfproj" />
+    <ProjectReference Include="..\TS_LinearInputComponent\TS_LinearInputComponent.pcfproj" />
+    <ProjectReference Include="..\TS_LocalizationAPI\TS_LocalizationAPI.pcfproj" />
+    <ProjectReference Include="..\TS_MapComponent\TS_MapComponent.pcfproj" />
+    <ProjectReference Include="..\TS_NavigationAPI\TS_NavigationAPI.pcfproj" />
+    <ProjectReference Include="..\TS_ReactStandardComponent\TS_ReactStandardComponent.pcfproj" />
+    <ProjectReference Include="..\TS_TableComponent\TS_TableComponent.pcfproj" />
+    <ProjectReference Include="..\TS_TableGrid\TS_TableGrid.pcfproj" />
+    <ProjectReference Include="..\TS_WebAPI\TS_WebAPI.pcfproj" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <Import Project="$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.targets" Condition="Exists('$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.targets')" />
+
+  <Target Name="InitControls">
+    <PropertyGroup>
+      <PowerShellExe Condition=" '$(PowerShellExe)'=='' ">%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe</PowerShellExe>
+      <ScriptLocation Condition=" '$(ScriptLocation)'=='' ">.\npm-install-all-controls.ps1</ScriptLocation>
+    </PropertyGroup>
+    <Exec Command="$(PowerShellExe) -NonInteractive -executionpolicy Unrestricted -File $(ScriptLocation)" />
+  </Target>
+</Project>
